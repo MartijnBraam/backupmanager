@@ -2,6 +2,7 @@ import argparse
 import yaml
 import os
 import logging
+import subprocess
 import backupmanager.tools.borg as borg
 
 if __name__ == "__main__":
@@ -37,6 +38,16 @@ if __name__ == "__main__":
     if args.command == "info":
         tool.info(config)
     elif args.command == "run":
+        if config['hooks']['pre-backup']:
+            logging.info('Running pre-backup scripts')
+            for hook in config['hooks']['pre-backup']:
+                logging.info('Running {}'.format(hook))
+                subprocess.call(hook, shell=True)
         tool.run(config)
+        if config['hooks']['post-backup']:
+            logging.info('Running post-backup scripts')
+            for hook in config['hooks']['post-backup']:
+                logging.info('Running {}'.format(hook))
+                subprocess.call(hook, shell=True)
     elif args.command == "verify":
         tool.verify(config)
