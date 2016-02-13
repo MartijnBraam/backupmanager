@@ -37,6 +37,9 @@ if __name__ == "__main__":
 
     if args.command == "info":
         tool.info(config)
+    elif args.command == "init":
+        print("*kuch* *kuch* not implemented yet.")
+        print("Copy backup.yml.dist from the source tree to /etc/backup.yml manually")
     elif args.command == "run":
         if config['hooks']['pre-backup']:
             logging.info('Running pre-backup scripts')
