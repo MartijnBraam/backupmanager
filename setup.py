@@ -5,7 +5,7 @@ from distutils.core import setup
 setup(
         name='backupmanager',
         version='0.1.0',
-        packages=['backupmanager'],
+        packages=['backupmanager', 'backupmanager.tools'],
         url='https://github.com/MartijnBraam/backupmanager',
         license='MIT',
         author='Martijn Braam',
