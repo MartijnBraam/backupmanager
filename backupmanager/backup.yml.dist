@@ -1,0 +1,29 @@
+tool: borg
+
+what:
+  include:
+    - /home/martijn
+    - /srv/http
+  include-files: ~
+  exclude: ~
+  exclude-files:
+    - /home/martijn/backup-exclude.txt
+
+where:
+  type: ssh
+  host: 192.168.2.101
+  user: root
+  path: /mnt/storage/backups/zenbook
+  archive-template: 'Backup-%Y-%m-%d'
+  compression: fast
+
+retention:
+  only-prefix: ~
+  daily-backups: 1
+  weekly-backups: 1
+  monthly-backups: 1
+
+hooks:
+  pre-backup:
+    - dump_databases
+  post-backup: ~
