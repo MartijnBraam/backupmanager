@@ -1,6 +1,7 @@
 import argparse
 import yaml
 import os
+from shutil import copyfile
 import logging
 import subprocess
 import backupmanager.tools.borg as borg
@@ -39,8 +40,13 @@ def main():
     if args.command == "info":
         tool.info(config)
     elif args.command == "init":
-        print("*kuch* *kuch* not implemented yet.")
-        print("Copy backup.yml.dist from the source tree to /etc/backup.yml manually")
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
+        if not os.path.isfile('/etc/backup.yml'):
+            logging.info('Creating /etc/backup.yml from template')
+            copyfile(os.path.join(dir_path, 'backup.yml.dist'), '/etc/backup.yml')
+        else:
+            logging.warning('/etc/backup.yml exists already, skipping')
     elif args.command == "run":
         if config['hooks']['pre-backup']:
             logging.info('Running pre-backup scripts')
