@@ -4,6 +4,7 @@ import os
 from shutil import copyfile
 import logging
 import subprocess
+from plumbum import local
 import backupmanager.tools.borg as borg
 import backupmanager.common as common
 
@@ -13,7 +14,7 @@ def main():
     parser.add_argument('--config', '-c', help="Config file location", default="/etc/backup.yml")
     parser.add_argument('--quiet', '-q', help="Raise loglevel to warning", action="store_true")
     parser.add_argument('--debug', '-d', help="Set loglevel to debug", action="store_true", default=False)
-    parser.add_argument('command', choices=["init", "run", "info", "verify"])
+    parser.add_argument('command', choices=["init", "run", "info", "verify", "setup-systemd"])
 
     args = parser.parse_args()
 
@@ -73,6 +74,26 @@ def main():
     elif args.command == "verify":
         common.verify_config(config)
         tool.verify(config)
+
+    elif args.command == "setup-systemd":
+        path = os.path.abspath(__file__)
+        dir_path = os.path.dirname(path)
+        if not os.path.isfile('/etc/systemd/system/backup.service'):
+            logging.info('Creating /etc/systemd/system/backup.service from template')
+            copyfile(os.path.join(dir_path, 'systemd', 'backup.service'), '/etc/systemd/system/backup.service')
+        else:
+            logging.warning('/etc/systemd/system/backup.service exists already, skipping')
+
+        if not os.path.isfile('/etc/systemd/system/backup.timer'):
+            logging.info('Creating /etc/systemd/system/backup.timer from template')
+            copyfile(os.path.join(dir_path, 'systemd', 'backup.timer'), '/etc/systemd/system/backup.timer')
+        else:
+            logging.warning('/etc/systemd/system/backup.timer exists already, skipping')
+
+        systemctl = local['systemctl']
+        systemctl('daemon-reload')
+        systemctl('enable backup.timer')
+        systemctl('start backup.timer')
 
 
 if __name__ == "__main__":

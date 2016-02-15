@@ -1,0 +1,9 @@
+[Unit]
+Description=Backupmanager service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/backupmanager
+
+[Install]
+WantedBy=backup.timer
