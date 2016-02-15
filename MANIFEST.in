@@ -1,0 +1,3 @@
+include backupmanager/backup.yml.dist
+include backupmanager/systemd/backup.service
+include backupmanager/systemd/backup.timer

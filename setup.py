@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
         name='backupmanager',
-        version='0.2.4',
+        version='0.2.6',
         packages=['backupmanager', 'backupmanager.tools'],
         url='https://github.com/MartijnBraam/backupmanager',
         license='MIT',
