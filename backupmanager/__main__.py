@@ -86,14 +86,14 @@ def main():
         if not os.path.isfile('/etc/systemd/system/backup.timer'):
             logging.info('Creating /etc/systemd/system/backup.timer from template')
             filename = pkg_resources.resource_filename('backupmanager', 'systemd/backup.timer')
-            copyfile(filename, '/etc/systemd/system/backup.service')
+            copyfile(filename, '/etc/systemd/system/backup.timer')
         else:
             logging.warning('/etc/systemd/system/backup.timer exists already, skipping')
 
         systemctl = local['systemctl']
         systemctl('daemon-reload')
-        systemctl('enable backup.timer')
-        systemctl('start backup.timer')
+        systemctl('enable', 'backup.timer')
+        systemctl('start', 'backup.timer')
 
 
 if __name__ == "__main__":
