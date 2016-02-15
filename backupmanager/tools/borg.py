@@ -7,7 +7,7 @@ from tabulate import tabulate
 
 def info(config):
     print('Backup tool: borg')
-
+    print('Repository:  {}'.format(borg_repository(config)))
     repository = borg_repository(config)
     logging.debug('Borg repository: {}'.format(repository))
 
@@ -15,7 +15,9 @@ def info(config):
     borg_list = borg['list', repository]
     list = borg_list()
     logging.debug('Received list')
-
+    if len(list.strip()) == 0:
+        print("No backups have been created yet.")
+        return
     table = []
     for archive in list.split("\n"):
         if archive.strip() != "":
@@ -34,7 +36,7 @@ def info(config):
 
 
 def run(config):
-    logging.info('Starting borg backup')
+    logging.info('Starting borg backup to {}'.format(borg_repository(config)))
     archive_name = datetime.datetime.now().__format__(config['where']['archive-template'])
     archive = '{}::{}'.format(borg_repository(config), archive_name)
     with open('/tmp/borg-exclude-file', 'w') as exclude_file:
