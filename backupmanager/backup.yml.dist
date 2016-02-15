@@ -46,3 +46,15 @@ hooks:
   pre-backup:
     - dump_databases
   post-backup: ~
+
+# What to do when errors occur
+errors:
+  # execute scripts on failure
+  execute: ~
+  # email on failure
+  mail:
+    enable: false
+    from: backup@example.com
+    to: monitoring@example.com
+    # ~ to deliver with sendmail or enter a smtp url
+    deliver: ~

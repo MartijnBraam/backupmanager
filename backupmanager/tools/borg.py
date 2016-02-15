@@ -1,8 +1,10 @@
 import logging
 from plumbum.cmd import borg
+from plumbum.commands.processes import ProcessExecutionError
 import datetime
 import humanize
 from tabulate import tabulate
+import backupmanager.common as common
 
 
 def info(config):
@@ -64,7 +66,13 @@ def run(config):
         for f in config['what']['include-files']:
             with open(f) as input_file:
                 arguments.extend(input_file.readlines())
-    command(tuple(arguments))
+    try:
+        command(tuple(arguments))
+    except ProcessExecutionError as e:
+        logging.error('Backup failed, borg returned error')
+        result = e.stdout + e.stderr
+        common.failure(config, result)
+
     logging.info('Borg backup complete')
     cleanup(config)
 

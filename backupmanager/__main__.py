@@ -5,6 +5,7 @@ from shutil import copyfile
 import logging
 import subprocess
 import backupmanager.tools.borg as borg
+import backupmanager.common as common
 
 
 def main():
@@ -39,6 +40,7 @@ def main():
 
     if args.command == "info":
         tool.info(config)
+
     elif args.command == "init":
         path = os.path.abspath(__file__)
         dir_path = os.path.dirname(path)
@@ -47,19 +49,29 @@ def main():
             copyfile(os.path.join(dir_path, 'backup.yml.dist'), '/etc/backup.yml')
         else:
             logging.warning('/etc/backup.yml exists already, skipping')
+
     elif args.command == "run":
+        common.verify_config(config)
         if config['hooks']['pre-backup']:
             logging.info('Running pre-backup scripts')
             for hook in config['hooks']['pre-backup']:
                 logging.info('Running {}'.format(hook))
-                subprocess.call(hook, shell=True)
+                try:
+                    subprocess.check_output(hook, shell=True)
+                except subprocess.CalledProcessError as e:
+                    common.failure(config, e.output)
         tool.run(config)
         if config['hooks']['post-backup']:
             logging.info('Running post-backup scripts')
             for hook in config['hooks']['post-backup']:
                 logging.info('Running {}'.format(hook))
-                subprocess.call(hook, shell=True)
+                try:
+                    subprocess.check_output(hook, shell=True)
+                except subprocess.CalledProcessError as e:
+                    common.failure(config, e.output)
+
     elif args.command == "verify":
+        common.verify_config(config)
         tool.verify(config)
 
 
