@@ -31,6 +31,15 @@ def main():
         logging.warning("You can create a config file scaffolding with 'backupmanager init'")
         exit(1)
 
+    if args.command == "init":
+        if not os.path.isfile('/etc/backup.yml'):
+            logging.info('Creating /etc/backup.yml from template')
+            filename = pkg_resources.resource_filename('backupmanager', 'backup.yml.dist')
+            copyfile(filename, '/etc/backup.yml')
+        else:
+            logging.warning('/etc/backup.yml exists already, skipping')
+        exit(0)
+
     with open(args.config) as config_file:
         config = yaml.load(config_file)
     tool = config['tool']
@@ -42,14 +51,6 @@ def main():
 
     if args.command == "info":
         tool.info(config)
-
-    elif args.command == "init":
-        if not os.path.isfile('/etc/backup.yml'):
-            logging.info('Creating /etc/backup.yml from template')
-            filename = pkg_resources.resource_filename('backupmanager', 'backup.yml.dist')
-            copyfile(filename, '/etc/backup.yml')
-        else:
-            logging.warning('/etc/backup.yml exists already, skipping')
 
     elif args.command == "run":
         common.verify_config(config)
