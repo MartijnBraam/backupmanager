@@ -26,7 +26,7 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
         logging.debug("Debug logging enabled")
 
-    if not os.path.isfile(args.config):
+    if not os.path.isfile(args.config) and args.command != 'init':
         logging.error("Config file does not exist at {}".format(args.config))
         logging.warning("You can create a config file scaffolding with 'backupmanager init'")
         exit(1)

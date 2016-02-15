@@ -1,5 +1,4 @@
 import logging
-from plumbum.cmd import borg
 from plumbum.commands.processes import ProcessExecutionError
 import datetime
 import humanize
@@ -8,6 +7,7 @@ import backupmanager.common as common
 
 
 def info(config):
+    from plumbum.cmd import borg
     print('Backup tool: borg')
     print('Repository:  {}'.format(borg_repository(config)))
     repository = borg_repository(config)
@@ -38,6 +38,7 @@ def info(config):
 
 
 def run(config):
+    from plumbum.cmd import borg
     logging.info('Starting borg backup to {}'.format(borg_repository(config)))
     archive_name = datetime.datetime.now().__format__(config['where']['archive-template'])
     archive = '{}::{}'.format(borg_repository(config), archive_name)
@@ -82,6 +83,7 @@ def verify(config):
 
 
 def cleanup(config):
+    from plumbum.cmd import borg
     logging.info('Starting borg pruning')
     prune = borg['prune', borg_repository(config)]
 
