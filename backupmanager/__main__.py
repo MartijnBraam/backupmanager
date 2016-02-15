@@ -5,7 +5,8 @@ import logging
 import subprocess
 import backupmanager.tools.borg as borg
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser(description="Backup manager")
     parser.add_argument('--config', '-c', help="Config file location", default="/etc/backup.yml")
     parser.add_argument('--quiet', '-q', help="Raise loglevel to warning", action="store_true")
@@ -54,3 +55,7 @@ if __name__ == "__main__":
                 subprocess.call(hook, shell=True)
     elif args.command == "verify":
         tool.verify(config)
+
+
+if __name__ == "__main__":
+    main()
