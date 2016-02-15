@@ -7,6 +7,7 @@ import subprocess
 from plumbum import local
 import backupmanager.tools.borg as borg
 import backupmanager.common as common
+import pkg_resources
 
 
 def main():
@@ -43,11 +44,10 @@ def main():
         tool.info(config)
 
     elif args.command == "init":
-        path = os.path.abspath(__file__)
-        dir_path = os.path.dirname(path)
         if not os.path.isfile('/etc/backup.yml'):
             logging.info('Creating /etc/backup.yml from template')
-            copyfile(os.path.join(dir_path, 'backup.yml.dist'), '/etc/backup.yml')
+            filename = pkg_resources.resource_filename('backupmanager', 'backup.yml.dist')
+            copyfile(filename, '/etc/backup.yml')
         else:
             logging.warning('/etc/backup.yml exists already, skipping')
 
@@ -76,17 +76,17 @@ def main():
         tool.verify(config)
 
     elif args.command == "setup-systemd":
-        path = os.path.abspath(__file__)
-        dir_path = os.path.dirname(path)
         if not os.path.isfile('/etc/systemd/system/backup.service'):
             logging.info('Creating /etc/systemd/system/backup.service from template')
-            copyfile(os.path.join(dir_path, 'systemd', 'backup.service'), '/etc/systemd/system/backup.service')
+            filename = pkg_resources.resource_filename('backupmanager', 'systemd/backup.service')
+            copyfile(filename, '/etc/systemd/system/backup.service')
         else:
             logging.warning('/etc/systemd/system/backup.service exists already, skipping')
 
         if not os.path.isfile('/etc/systemd/system/backup.timer'):
             logging.info('Creating /etc/systemd/system/backup.timer from template')
-            copyfile(os.path.join(dir_path, 'systemd', 'backup.timer'), '/etc/systemd/system/backup.timer')
+            filename = pkg_resources.resource_filename('backupmanager', 'systemd/backup.timer')
+            copyfile(filename, '/etc/systemd/system/backup.service')
         else:
             logging.warning('/etc/systemd/system/backup.timer exists already, skipping')
 

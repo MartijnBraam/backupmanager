@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
         name='backupmanager',
-        version='0.2.6',
+        version='0.2.7',
         packages=['backupmanager', 'backupmanager.tools'],
         url='https://github.com/MartijnBraam/backupmanager',
         license='MIT',
@@ -21,6 +21,10 @@ setup(
             'console_scripts': [
                 'backupmanager = backupmanager.__main__:main'
             ]
+        },
+        include_package_data=True,
+        package_data={
+            '': ['*.dist', '*.service', '*.timer']
         },
         keywords=["backup", "linux", "manager"],
         classifiers=[
