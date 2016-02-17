@@ -6,11 +6,16 @@
 Welcome to Backup Manager's documentation!
 ==========================================
 
+Backup Manager is a wrapper around various backup tools. It has a generic configuration for what to backup and a mostly
+generic configuration for the backup destination. This makes it easy to switch backup software or manage a bunch of
+computers with multiple backup tools.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   quickstart
    config
    backends
 

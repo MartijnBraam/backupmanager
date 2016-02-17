@@ -2,3 +2,69 @@ backup.yml
 ==========
 
 The configuration for backupmanager is stored in backup.yml
+
+.. code-block:: yaml
+
+    # Set the tool used, can currently be "borg" or "duplicity"
+    tool: borg
+
+    # Describe what to include and exclude in the backups
+    what:
+      # Paths to include
+      include:
+        - /home/martijn
+        - /srv/http
+
+      # Files containing include paths
+      include-files: ~
+
+      # Paths to exclude
+      exclude: ~
+
+      # Files containing exclude paths
+      exclude-files:
+        - /home/martijn/backup-exclude.txt
+
+    # Describe the backup destination and related options
+    # This is slightly dependent on the backup tool used. View the documentation for the
+    # Backup backends for details
+    where:
+      type: ssh
+      host: 192.168.2.101
+      user: root
+      path: /mnt/storage/backups/zenbook
+      archive-template: 'Backup-%Y-%m-%d'
+
+      # Compression options, use ~, fast or slow.
+      # ~    : uncompressed backups
+      # fast : lz4 compressed backups
+      # slow : lzma,8 compressed backups
+      compression: fast
+
+    # Describe how to cleanup old backups
+    retention:
+      # Only cleanup backups starting with this name
+      only-prefix: ~
+
+      # Specify the amount of backups to keep in the category
+      daily-backups: 2
+      weekly-backups: 2
+      monthly-backups: 2
+
+    # Scripts to run before or after certain actions
+    hooks:
+      pre-backup:
+        - dump_databases
+      post-backup: ~
+
+    # What to do when errors occur
+    errors:
+      # execute scripts on failure
+      execute: ~
+      # email on failure
+      mail:
+        enable: false
+        from: backup@example.com
+        to: monitoring@example.com
+        # ~ to deliver with sendmail or enter a smtp url
+        deliver: ~
