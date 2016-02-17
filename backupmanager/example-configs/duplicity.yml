@@ -1,0 +1,62 @@
+tool: duplicity
+
+# Describe what to include and exclude in the backups
+what:
+  # Paths to include
+  include:
+    - /home/martijn
+    - /srv/http
+
+  # Files containing include paths
+  include-files: ~
+
+  # Paths to exclude
+  exclude: ~
+
+  # Files containing exclude paths
+  exclude-files:
+    - /home/martijn/backup-exclude.txt
+
+# Describe the bacup destination and related options
+where:
+  # type: azure, b2, cloudfiles, dropbox,ftp,ftps,gdocs,mega,onedrive,rsync,s3,ssh,swift,webdav
+  # See the documentation for details
+  type: ssh
+  host: 192.168.2.101
+  user: root
+  path: /mnt/storage/backups/zenbook
+  archive-template: 'Backup-%Y-%m-%d'
+
+  # Compression options, use ~, fast or slow.
+  # ~    : uncompressed backups
+  # fast : lz4 compressed backups
+  # slow : lzma,8 compressed backups
+  compression: fast
+
+# Describe how to cleanup old backups
+retention:
+  # Only cleanup backups starting with this name
+  only-prefix: ~
+
+  # Specify the amount of backups to keep in the category
+  daily-backups: 2
+  weekly-backups: 2
+  monthly-backups: 2
+
+# Scripts to run before or after certain actions
+hooks:
+  pre-backup:
+    - dump_databases
+  post-backup: ~
+
+# What to do when errors occur
+errors:
+  # execute scripts on failure
+  execute: ~
+  # email on failure
+  mail:
+    enable: false
+    from: backup@example.com
+    to: monitoring@example.com
+    # ~ to deliver with sendmail or enter a smtp url
+    deliver: ~

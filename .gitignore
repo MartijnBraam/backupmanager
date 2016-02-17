@@ -61,3 +61,5 @@ target/
 
 # VirtualEnv
 /venv/
+
+/docs/build

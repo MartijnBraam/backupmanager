@@ -6,6 +6,7 @@ import logging
 import subprocess
 from plumbum import local
 import backupmanager.tools.borg as borg
+import backupmanager.tools.duplicity as duplicity
 import backupmanager.common as common
 import pkg_resources
 
@@ -46,6 +47,8 @@ def main():
 
     if tool == "borg":
         tool = borg
+    if tool == "duplicity":
+        tool = duplicity
     else:
         logging.error("The tool '{}' is not supported".format(tool))
 
