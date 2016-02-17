@@ -1,14 +1,14 @@
 def info(config):
-    pass
+    raise NotImplementedError()
 
 
 def run(config):
-    pass
+    raise NotImplementedError()
 
 
 def verify(config):
-    pass
+    raise NotImplementedError()
 
 
 def cleanup(config):
-    pass
+    raise NotImplementedError()
