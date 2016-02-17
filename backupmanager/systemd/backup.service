@@ -3,7 +3,7 @@ Description=Backupmanager service
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/backupmanager
+ExecStart=/usr/local/bin/backupmanager run
 
 [Install]
 WantedBy=backup.timer
