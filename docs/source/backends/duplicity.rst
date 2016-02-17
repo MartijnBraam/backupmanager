@@ -59,6 +59,7 @@ Backup to a plain old ftp or ftps server.
         type: ftp # or ftps
         host: your.ftp.server.or.ip
         user: backup
+        password: secret
         path: /mnt/storage/backups/zenbook
 
         # Compression options, use ~, fast or slow.
