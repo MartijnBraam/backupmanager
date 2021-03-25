@@ -1,4 +1,4 @@
 humanize==0.5.1
 plumbum==1.6.1.post0
-PyYAML==3.11
+PyYAML==5.4
 tabulate==0.7.5
